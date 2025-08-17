@@ -1,0 +1,30 @@
+The Indian high court judgement dataset contains judgements from the Indian High Courts, downloaded from ecourts website. It contains judgments of 25 high courts, along with raw metadata (as .json) and structured metadata (as .parquet).
+
+- 25 high courts
+- ~16M judgments
+- ~1TB of data
+
+Structure of the data in the bucket:
+
+- `data/pdf/year=2025/court=xyz/bench=xyz/judgment1.pdf,judgment2.pdf`
+- `metadata/json/year=2025/court=xyz/bench=xyz/judgment1.json,judgment2.json`
+- `metadata/parquet/year=2025/court=xyz/bench=xyz/metadata.parquet`
+- `metadata/tar/year=2025/court=xyz/bench=xyz/metadata.tar.gz`
+- `data/tar/year=2025/court=xyz/bench=xyz/pdfs.tar`
+
+This DuckDB query counts the number of decisions in the dataset.
+
+```sql
+INSTALL httpfs; LOAD httpfs;
+INSTALL parquet; LOAD parquet;
+
+SELECT COUNT(*) FROM read_parquet('s3://indian-high-court-judgments/metadata/parquet/year=*/court=*/bench=*/metadata.parquet?s3_region=ap-south-1');
+```
+
+Answer the following questions and respond with a JSON object containing the answer.
+
+{
+  "Which high court disposed the most cases from 2019 - 2022?": "...",
+  "What's the regression slope of the date_of_registration - decision_date by year in the court=33_10?": "...",
+  "Plot the year and # of days of delay from the above question as a scatterplot with a regression line. Encode as a base64 data URI under 100,000 characters": "data:image/webp:base64,..."
+}
