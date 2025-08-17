@@ -25,6 +25,7 @@ from typing import Dict, List, Any, Tuple, Optional
 import logging
 
 # Configure logging
+port=int(os.environ.get("PORT",10000))
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -467,7 +468,7 @@ class DataAnalystAgent:
 # Initialize the agent
 agent = DataAnalystAgent()
 
-@app.route('/api/', methods=['POST'])
+@app.route('/api', methods=['POST'])
 def analyze_data():
     try:
         # Get the questions file
@@ -534,7 +535,7 @@ def index():
             "GET /health": "Health check",
             "GET /": "This info page"
         },
-        "example": "curl -X POST -F 'questions.txt=@questions.txt' https://your-domain.com/api/"
+        "example": "curl -X POST -F 'questions.txt=@questions.txt' https://tds-data-analyst-agent-rq50.onrender.com/api/"
     })
 
 if __name__ == '__main__':
