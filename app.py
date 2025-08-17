@@ -468,7 +468,18 @@ class DataAnalystAgent:
 # Initialize the agent
 agent = DataAnalystAgent()
 
-@app.route('/api', methods=['POST'])
+@app.route('/api/', methods=['GET','POST'])
+
+def api():
+    if request.method == 'GET':
+        return jsonify({"message": "API is running! Send a POST request with JSON data."})
+
+    # POST logic
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+
+    return jsonify({"message": "success", "data": data})
 def analyze_data():
     try:
         # Get the questions file
